@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 
 const debugPort = process.env.CHROME_DEBUG_PORT ?? "9338";
-const baseUrl = process.env.SEEN_URL ?? "http://127.0.0.1:4188/";
+const baseUrl =
+  process.env.SEEN_URL ?? "http://127.0.0.1:4188/seen-period-pain/";
 const outputDirectory = new URL("../.qa/", import.meta.url);
 
 await mkdir(outputDirectory, { recursive: true });
