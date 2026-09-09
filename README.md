@@ -62,13 +62,23 @@ npm run build
 npm run preview
 ```
 
+The production preview uses the GitHub Pages project path:
+
+```text
+http://127.0.0.1:4173/seen-period-pain/
+```
+
 The tests verify state semantics, individual clearing, Undo snapshots, prohibited privacy APIs, source-registry fields, and exclusion of the outdated diagnostic-delay placeholder. Browser QA should cover the full journey, partial and skipped answers, editing, Clear and Undo, Exit and Clear All, refresh, printing, keyboard focus, 200% text scaling, reduced motion, and responsive layouts.
 
 ## Deployment
 
-Run formatting, type checking, tests, and a production build. Deploy the generated `dist/` directory to a static host. HTTPS is required for production. Review the built files for prohibited network or persistence behavior and repeat the source review before release.
+GitHub Pages deployment is defined in `.github/workflows/deploy-pages.yml`. It installs the locked dependencies, builds the Vite application with the `/seen-period-pain/` base path, and deploys only `dist/`.
 
-No deployment configuration or remote repository is included in v1.
+Before the first workflow deployment, open the GitHub repository’s **Settings → Pages** and change **Build and deployment → Source** from **Deploy from a branch** to **GitHub Actions**. Pushes to `main` then build and publish the site automatically.
+
+Before release, run formatting, type checking, tests, and a production build. Review the built files for prohibited network or persistence behavior and repeat the source review.
+
+The production URL is `https://angela1-creates.github.io/seen-period-pain/`.
 
 ## Prototype Limitations
 
