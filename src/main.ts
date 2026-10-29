@@ -239,35 +239,18 @@ const renderIntroduction = (): string => {
       <div class="boundary-panel"><h3>Product boundaries</h3><p>Seen cannot determine the cause of pain, calculate risk, recommend treatment or medication, or tell you whether something needs urgent care. If you feel worried or unsafe, contact a healthcare professional or a trusted adult.</p><span>Safety wording requires licensed clinical review.</span></div>
     </section>
 
-    <aside class="prototype-status" aria-labelledby="prototype-status-title">
-      <p class="eyebrow">Prototype status</p>
-      <h2 id="prototype-status-title">Health copy is sourced, but not clinically reviewed.</h2>
+    <aside class="review-status" aria-labelledby="review-status-title">
+      <p class="eyebrow">Clinical review status</p>
+      <h2 id="review-status-title">Health copy is sourced, but not yet clinically reviewed.</h2>
       <p>The wording and appointment-question library still require review by a licensed adolescent-health or gynecology professional before release.</p>
     </aside>
 
-    <section id="about-design" class="case-study" aria-labelledby="about-title">
-      <div class="section-heading"><p class="eyebrow">About the design</p><h2 id="about-title">Support the conversation, not a conclusion.</h2></div>
-      <div class="case-grid">
-        <article><h3>The communication problem</h3><p>Adolescents may arrive at an appointment with experiences that are real but difficult to summarize. Seen organizes their account without assigning meaning to it.</p></article>
-        <article><h3>Why no diagnosis</h3><p>A self-guided prototype cannot establish why pain is happening. Keeping description separate from clinical interpretation protects the user’s uncertainty.</p></article>
-        <article><h3>Why no generative AI</h3><p>V1 uses fixed copy and questions so every health statement can be traced and reviewed. It never rewrites or expands a user’s answer.</p></article>
-        <article><h3>What comes next</h3><p>Testing should include adolescents, trusted adults, clinicians, keyboard and screen-reader users, and real appointment and print workflows.</p></article>
-      </div>
-      <div class="future-design">
-        <div><p class="eyebrow">After V1</p><h3>Ideas to test, not current features.</h3></div>
-        <div class="future-design-copy">
-          <section><h4>Things you may choose to track</h4><p data-source-id="ACOG-PAINFUL-2026 NHS-PERIOD-PROBLEMS-2023">ACOG and NHS guidance supports documenting symptoms, menstrual timing, and effects on daily life for healthcare conversations. ${sourceLink("ACOG-PAINFUL-2026", "ACOG")} ${sourceLink("NHS-PERIOD-PROBLEMS-2023", "NHS")}</p></section>
-          <section><h4>Help me put this into words</h4><p>A later, optional AI concept could ask one gentle, clinician-reviewed follow-up at a time and explain why it suggests a question. It must never diagnose, score risk, recommend treatment, or reassure. The user would approve every sentence before it entered the brief, with clear disclosure if any data left the device.</p></section>
-        </div>
-      </div>
-    </section>
-
     <section id="sources" class="sources-section" aria-labelledby="sources-title">
-      <div class="section-heading"><p class="eyebrow">Sources and review status</p><h2 id="sources-title">Traceable, not yet clinically reviewed.</h2><p>Health copy is grounded in the sources below. A licensed adolescent-health or gynecology professional has not yet reviewed Seen.</p></div>
+      <div class="section-heading"><p class="eyebrow">Sources &amp; limitations</p><h2 id="sources-title">Traceable, not yet clinically reviewed.</h2><p>Health copy is grounded in the sources below. A licensed adolescent-health or gynecology professional has not yet reviewed Seen.</p></div>
       <div class="source-list">${sources.map((source) => `<article><div><span>${source.organization}</span><strong>${escapeHtml(source.title)}</strong></div><p>${escapeHtml(source.supportedStatement)}</p><p class="source-meta">${source.publicationDate} · Accessed ${source.accessed} · Clinical review required</p><a href="${source.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a></article>`).join("")}</div>
     </section>
 
-    <footer class="site-footer"><p>Seen is an educational communication-support prototype.</p><a href="https://angela1-creates.github.io/" target="_blank" rel="noopener noreferrer">Angela Wan’s portfolio <span aria-hidden="true">↗</span></a></footer>
+    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><a href="https://angela1-creates.github.io/projects/seen/" target="_blank" rel="noopener noreferrer">View the design case study <span aria-hidden="true">↗</span></a></footer>
   </div>`;
 };
 
@@ -644,19 +627,10 @@ const handleClick = (event: MouseEvent): void => {
   if (action === "begin") setView("experience");
   if (action === "resume") setView("experience");
   if (action === "go-intro") setView("introduction");
-  if (
-    action === "show-how" ||
-    action === "show-about" ||
-    action === "show-sources"
-  ) {
+  if (action === "show-how" || action === "show-sources") {
     state.view = "introduction";
     render();
-    const sectionId =
-      action === "show-how"
-        ? "#how-seen-works"
-        : action === "show-about"
-          ? "#about-design"
-          : "#sources";
+    const sectionId = action === "show-how" ? "#how-seen-works" : "#sources";
     const section = document.querySelector<HTMLElement>(sectionId);
     section?.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches

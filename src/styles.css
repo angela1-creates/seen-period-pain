@@ -334,8 +334,7 @@ p {
 .intro-band,
 .help-section,
 .privacy-section,
-.prototype-status,
-.case-study,
+.review-status,
 .sources-section {
   padding: clamp(72px, 9vw, 120px) clamp(20px, 5vw, 72px);
 }
@@ -486,7 +485,7 @@ p {
   font-weight: 750;
 }
 
-.prototype-status {
+.review-status {
   display: grid;
   grid-template-columns: minmax(180px, 0.35fr) minmax(0, 0.8fr) minmax(0, 1fr);
   align-items: start;
@@ -495,79 +494,23 @@ p {
   border-bottom: 1px solid #e2b4b0;
   background: var(--soft-coral);
 }
-.prototype-status > * {
+.review-status > * {
   margin: 0;
 }
-.prototype-status h2 {
+.review-status h2 {
   font-family: Georgia, serif;
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 1.15;
 }
-.prototype-status > p:last-child {
+.review-status > p:last-child {
   max-width: 620px;
   color: #704e50;
 }
 
-.case-study {
-  background: white;
-}
-.case-study > .section-heading,
 .sources-section > .section-heading {
   max-width: 1180px;
   margin: 0 auto 44px;
-}
-.case-grid {
-  display: grid;
-  max-width: 1180px;
-  margin: 0 auto;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
-}
-.case-grid article {
-  min-height: 210px;
-  padding: 28px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.case-grid h3 {
-  font-family: Georgia, serif;
-  font-size: 1.45rem;
-}
-.case-grid p {
-  color: var(--muted);
-}
-.future-design {
-  display: grid;
-  max-width: 1180px;
-  margin: 64px auto 0;
-  grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1.55fr);
-  gap: 48px;
-  padding-top: 40px;
-  border-top: 2px solid var(--plum);
-}
-.future-design h3 {
-  font-family: Georgia, serif;
-  font-size: 1.8rem;
-  font-weight: 500;
-}
-.future-design-copy {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px;
-}
-.future-design-copy section + section {
-  padding-left: 40px;
-  border-left: 1px solid var(--line);
-}
-.future-design-copy h4 {
-  margin: 0 0 12px;
-  font-family: Georgia, serif;
-  font-size: 1.35rem;
-}
-.future-design-copy p {
-  color: var(--muted);
 }
 .sources-section {
   background: #302a30;
@@ -1135,18 +1078,8 @@ dialog::backdrop {
   .privacy-section > div:first-child {
     grid-template-columns: 1fr;
   }
-  .prototype-status,
-  .future-design {
+  .review-status {
     grid-template-columns: 1fr;
-  }
-  .future-design-copy {
-    grid-template-columns: 1fr;
-  }
-  .future-design-copy section + section {
-    padding-top: 28px;
-    padding-left: 0;
-    border-top: 1px solid var(--line);
-    border-left: 0;
   }
   .source-list article {
     grid-template-columns: minmax(150px, 0.7fr) 1.3fr;
