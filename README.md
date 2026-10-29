@@ -12,11 +12,11 @@ The primary audience is teen girls and other adolescents who menstruate and find
 
 The entry page is followed by four numbered reflection steps, then Review and Appointment Brief. The progress indicator counts only the four reflection steps.
 
-1. **Introduction** explains the product, privacy model, limits, design rationale, and sources before any sensitive questions appear.
+1. **Introduction** explains the product, privacy model, limits, and sources before any sensitive questions appear.
 2. **Experience** records the user’s own description and timing without interpreting it.
 3. **Impact** records effects on school, sleep, physical activity, social plans, concentration, and everyday tasks.
 4. **Previous Actions** records what the user already tried and what they noticed. Seen does not supply recommendations.
-5. **Questions** groups a fixed nine-question library under Understanding, Next steps, and Support; shows a five-question selection limit; accepts one custom question; and offers an optional “Anything else worth mentioning?” note. Clinical-review status is kept outside the active form in a prototype-status notice.
+5. **Questions** groups a fixed nine-question library under Understanding, Next steps, and Support; shows a five-question selection limit; accepts one custom question; and offers an optional “Anything else worth mentioning?” note. Clinical-review status is kept outside the active form in a dedicated review-status notice.
 6. **Review** shows exactly what was entered and preserves missing, skipped, and prefer-not-to-answer states.
 7. **Appointment Brief** formats the user’s answers for local browser printing or the browser’s Save as PDF option. Users are warned to print or save before refreshing or closing the tab.
 
@@ -74,13 +74,13 @@ The tests verify state semantics, individual clearing, Undo snapshots, prohibite
 
 ## Deployment
 
-GitHub Pages deployment is defined in `.github/workflows/deploy-pages.yml`. It installs the locked dependencies, builds the Vite application with the `/seen-period-pain/` base path, and deploys only `dist/`.
+Vercel deploys the live experience automatically from `main`. GitHub Pages deployment is also defined in `.github/workflows/deploy-pages.yml`; it installs the locked dependencies, builds the Vite application with the `/seen-period-pain/` base path, and deploys only `dist/`.
 
 Before the first workflow deployment, open the GitHub repository’s **Settings → Pages** and change **Build and deployment → Source** from **Deploy from a branch** to **GitHub Actions**. Pushes to `main` then build and publish the site automatically.
 
 Before release, run formatting, type checking, tests, and a production build. Review the built files for prohibited network or persistence behavior and repeat the source review.
 
-The production URL is `https://angela1-creates.github.io/seen-period-pain/`.
+The canonical production URL is `https://seen-period-pain.vercel.app/`.
 
 ## Prototype Limitations
 
