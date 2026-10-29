@@ -107,3 +107,11 @@ export const statusLabel = (status: AnswerStatus): string => {
   if (status === "unanswered") return "Not answered";
   return "Answered";
 };
+
+export const statusFromContent = (
+  status: AnswerStatus,
+  hasContent: boolean,
+): AnswerStatus => {
+  if (hasContent) return "answered";
+  return status === "answered" ? "unanswered" : status;
+};

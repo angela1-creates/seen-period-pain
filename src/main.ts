@@ -6,6 +6,7 @@ import {
   createInitialState,
   hasAnswerData,
   resetAnswer,
+  statusFromContent,
   statusLabel,
   type ActionOutcome,
   type AnswerKey,
@@ -154,7 +155,7 @@ const setView = (view: JourneyView, message?: string): void => {
 const renderStatusControl = (key: AnswerKey): string => {
   const status = state[key].status;
   return `<div class="answer-tools">
-    <span class="answer-status">${statusLabel(status)}</span>
+    <span class="answer-status" data-status-for="${key}">${statusLabel(status)}</span>
     <button class="text-button" type="button" data-action="prefer" data-key="${key}">Prefer not to answer</button>
     <button class="text-button text-danger" type="button" data-action="clear-answer" data-key="${key}"${status === "unanswered" ? " disabled" : ""}>Clear this answer</button>
   </div>`;
@@ -163,8 +164,8 @@ const renderStatusControl = (key: AnswerKey): string => {
 const renderProgress = (): string => {
   const current = reflectionProgress[state.view];
   if (!current) return "";
-  return `<div class="progress-wrap" aria-label="Appointment notes, step ${current} of 4">
-    <p><strong>Appointment notes</strong> <span>Step ${current} of 4</span></p>
+  return `<div class="progress-wrap" aria-label="Reflection step ${current} of 4">
+    <p><strong>Four-step reflection</strong> <span>Step ${current} of 4</span></p>
     <ol class="progress-dots" aria-hidden="true">
       ${[1, 2, 3, 4].map((step) => `<li class="${step === current ? "current" : step < current ? "complete" : ""}"></li>`).join("")}
     </ol>
@@ -433,7 +434,7 @@ const renderBriefRow = (
 
 const renderBrief = (): string =>
   renderJourneyShell(`<div class="brief-page">
-  <div class="brief-intro screen-only"><p class="eyebrow">Appointment brief</p><h1 data-view-heading tabindex="-1">Ready when you are.</h1><p><strong>User-controlled output:</strong> print or save the final brief as a PDF. <strong>Print or save your brief before refreshing or closing this tab.</strong> Seen does not upload or automatically save the brief.</p><div><button class="button button-secondary" type="button" data-action="back" data-view="review">Back to review</button><button class="button button-primary" type="button" data-action="print">Print or save as PDF</button></div></div>
+  <div class="brief-intro screen-only"><p class="eyebrow">Appointment brief</p><h1 data-view-heading tabindex="-1">Ready when you are.</h1><p><strong>User-controlled output:</strong> print or save the final brief as a PDF. <strong>Your brief stays available in this tab after the print dialog closes, whether or not you print.</strong> It disappears when you refresh or close the tab, or when you explicitly clear it.</p><p class="print-status" data-print-status hidden>Your brief is still here. You can print or save another copy, edit your answers, or clear it when you are finished.</p><div><button class="button button-secondary" type="button" data-action="back" data-view="review">Back to review</button><button class="button button-primary" type="button" data-action="print">Print or save as PDF</button></div></div>
   <article class="print-brief" aria-label="My appointment notes">
     <header><div><span class="brief-mark">Seen</span><h1>My appointment notes</h1></div><p>Prepared from my own answers</p></header>
     <div class="brief-grid">
@@ -446,7 +447,7 @@ const renderBrief = (): string =>
     </div>
     <footer><p>Seen did not analyze, diagnose, or recommend anything from these notes.</p><p>This brief was generated locally in the browser.</p></footer>
   </article>
-  <div class="post-brief screen-only"><button class="text-button" data-action="go-intro">Return to introduction</button><button class="text-button" data-action="show-sources">Read sources and limitations</button><button class="text-button text-danger" data-action="reset">Clear all answers</button></div>
+  <div class="post-brief screen-only"><button class="text-button" data-action="go-intro">Return to introduction</button><button class="text-button" data-action="show-sources">Read sources and limitations</button><button class="text-button text-danger" data-action="reset">Clear brief and answers</button></div>
 </div>`);
 
 const render = (): void => {
@@ -477,11 +478,85 @@ const syncActionInputs = (): void => {
     return description || outcome ? [{ description, outcome }] : [];
   });
   state.actions.items = items;
-  state.actions.status = items.length
-    ? "answered"
-    : state.actions.status === "answered"
-      ? "unanswered"
-      : state.actions.status;
+  state.actions.status = statusFromContent(
+    state.actions.status,
+    items.length > 0,
+  );
+};
+
+const syncExperienceInputs = (): void => {
+  const form = app.querySelector<HTMLFormElement>("#experience-form");
+  if (!form) return;
+  const data = new FormData(form);
+  state.experience.value = String(data.get("experience") ?? "").trim();
+  state.experience.status = statusFromContent(
+    state.experience.status,
+    Boolean(state.experience.value),
+  );
+  state.timing.values = data.getAll("timing").map(String);
+  state.timing.detail = String(data.get("timing-detail") ?? "").trim();
+  state.timing.status = statusFromContent(
+    state.timing.status,
+    Boolean(state.timing.values.length || state.timing.detail),
+  );
+};
+
+const syncImpactInputs = (): void => {
+  const form = app.querySelector<HTMLFormElement>("#impact-form");
+  if (!form) return;
+  const data = new FormData(form);
+  state.impact.entries = data
+    .getAll("impact-area")
+    .map(String)
+    .map((area) => {
+      const key = area.toLowerCase().replace(/[^a-z]+/g, "-");
+      return {
+        area,
+        level: String(data.get(`impact-level-${key}`) ?? "") as
+          ImpactLevel | "",
+      };
+    });
+  state.impact.customArea = String(data.get("custom-impact") ?? "").trim();
+  state.impact.customLevel = String(data.get("custom-impact-level") ?? "") as
+    ImpactLevel | "";
+  state.impact.status = statusFromContent(
+    state.impact.status,
+    Boolean(
+      state.impact.entries.length ||
+      state.impact.customArea ||
+      state.impact.customLevel,
+    ),
+  );
+};
+
+const syncQuestionInputs = (): void => {
+  const form = app.querySelector<HTMLFormElement>("#questions-form");
+  if (!form) return;
+  const data = new FormData(form);
+  state.questions.selected = data
+    .getAll("question")
+    .slice(0, 5)
+    .flatMap((index) => {
+      const question = questionLibrary[Number(index)];
+      return question ? [question] : [];
+    });
+  state.questions.custom = String(data.get("custom-question") ?? "").trim();
+  state.questions.status = statusFromContent(
+    state.questions.status,
+    Boolean(state.questions.selected.length || state.questions.custom),
+  );
+  state.notes.value = String(data.get("notes") ?? "").trim();
+  state.notes.status = statusFromContent(
+    state.notes.status,
+    Boolean(state.notes.value),
+  );
+};
+
+const syncCurrentInputs = (): void => {
+  syncExperienceInputs();
+  syncImpactInputs();
+  syncActionInputs();
+  syncQuestionInputs();
 };
 
 type ReflectiveView = "experience" | "impact" | "actions" | "questions";
@@ -503,73 +578,14 @@ const finishStep = (view: ReflectiveView): void => {
 const handleSubmit = (event: SubmitEvent): void => {
   event.preventDefault();
   const form = event.target as HTMLFormElement;
-  const data = new FormData(form);
+  syncCurrentInputs();
   if (form.id === "experience-form") {
-    const experience = String(data.get("experience") ?? "").trim();
-    state.experience.value = experience;
-    state.experience.status = experience
-      ? "answered"
-      : state.experience.status === "answered"
-        ? "unanswered"
-        : state.experience.status;
-    const timing = data.getAll("timing").map(String);
-    const detail = String(data.get("timing-detail") ?? "").trim();
-    state.timing.values = timing;
-    state.timing.detail = detail;
-    state.timing.status =
-      timing.length || detail
-        ? "answered"
-        : state.timing.status === "answered"
-          ? "unanswered"
-          : state.timing.status;
     finishStep("experience");
   } else if (form.id === "impact-form") {
-    const areas = data.getAll("impact-area").map(String);
-    state.impact.entries = areas.flatMap((area) => {
-      const key = area.toLowerCase().replace(/[^a-z]+/g, "-");
-      const level = String(data.get(`impact-level-${key}`) ?? "") as
-        ImpactLevel | "";
-      return [{ area, level }];
-    });
-    state.impact.customArea = String(data.get("custom-impact") ?? "").trim();
-    state.impact.customLevel = String(data.get("custom-impact-level") ?? "") as
-      ImpactLevel | "";
-    const hasImpact = Boolean(
-      state.impact.entries.length ||
-      state.impact.customArea ||
-      state.impact.customLevel,
-    );
-    state.impact.status = hasImpact
-      ? "answered"
-      : state.impact.status === "answered"
-        ? "unanswered"
-        : state.impact.status;
     finishStep("impact");
   } else if (form.id === "actions-form") {
-    syncActionInputs();
     finishStep("actions");
   } else if (form.id === "questions-form") {
-    state.questions.selected = data
-      .getAll("question")
-      .slice(0, 5)
-      .flatMap((index) => {
-        const question = questionLibrary[Number(index)];
-        return question ? [question] : [];
-      });
-    state.questions.custom = String(data.get("custom-question") ?? "").trim();
-    state.questions.status =
-      state.questions.selected.length || state.questions.custom
-        ? "answered"
-        : state.questions.status === "answered"
-          ? "unanswered"
-          : state.questions.status;
-    const notes = String(data.get("notes") ?? "").trim();
-    state.notes.value = notes;
-    state.notes.status = notes
-      ? "answered"
-      : state.notes.status === "answered"
-        ? "unanswered"
-        : state.notes.status;
     finishStep("questions");
   }
 };
@@ -579,6 +595,18 @@ const stepKeys: Partial<Record<JourneyView, AnswerKey[]>> = {
   impact: ["impact"],
   actions: ["actions"],
   questions: ["questions", "notes"],
+};
+
+const refreshStatusControls = (): void => {
+  for (const key of stepKeys[state.view] ?? []) {
+    const status = state[key].status;
+    const label = app.querySelector<HTMLElement>(`[data-status-for="${key}"]`);
+    if (label) label.textContent = statusLabel(status);
+    const clear = app.querySelector<HTMLButtonElement>(
+      `[data-action="clear-answer"][data-key="${key}"]`,
+    );
+    if (clear) clear.disabled = status === "unanswered";
+  }
 };
 
 const clearAnswerWithUndo = (key: AnswerKey): void => {
@@ -723,6 +751,8 @@ document.addEventListener("input", (event) => {
         app.querySelectorAll('input[name="question"]:checked').length,
       );
   }
+  syncCurrentInputs();
+  refreshStatusControls();
 });
 
 document.addEventListener("change", (event) => {
@@ -743,6 +773,8 @@ document.addEventListener("change", (event) => {
       const select = level?.querySelector<HTMLSelectElement>("select");
       if (select) select.value = "";
     }
+    syncCurrentInputs();
+    refreshStatusControls();
     return;
   }
   const select = event.target as HTMLSelectElement;
@@ -752,6 +784,8 @@ document.addEventListener("change", (event) => {
     .closest<HTMLElement>(".impact-row")
     ?.querySelector<HTMLInputElement>('input[name="impact-area"]');
   if (areaCheckbox) areaCheckbox.checked = true;
+  syncCurrentInputs();
+  refreshStatusControls();
 });
 
 dialog.addEventListener("close", () => {
@@ -775,17 +809,16 @@ dialog.addEventListener("close", () => {
 window.addEventListener("beforeprint", () =>
   announce("Print preview started."),
 );
-window.addEventListener("afterprint", () =>
-  announce("Print preview closed. Your answers remain in this tab."),
-);
-window.addEventListener("pagehide", () => {
-  state = createInitialState();
-});
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    state = createInitialState();
-    render();
-  }
+window.addEventListener("afterprint", () => {
+  const printStatus = app.querySelector<HTMLElement>("[data-print-status]");
+  if (printStatus) printStatus.hidden = false;
+  const printButton = app.querySelector<HTMLButtonElement>(
+    '[data-action="print"]',
+  );
+  if (printButton) printButton.textContent = "Print or save another copy";
+  announce(
+    "Print preview closed. Your brief and answers remain available in this tab until you clear them, refresh, or close the tab.",
+  );
 });
 
 render();

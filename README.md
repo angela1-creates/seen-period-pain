@@ -8,7 +8,9 @@ Seen supports communication. It does not diagnose endometriosis or any other con
 
 The primary audience is teen girls and other adolescents who menstruate and find period-related pain difficult to explain. Secondary audiences include a trusted adult supporting the adolescent, a healthcare professional reading a user-created brief, and a portfolio visitor reviewing the design process.
 
-## Seven-State Journey
+## Seven Screens: Four Reflection Steps and Outputs
+
+The entry page is followed by four numbered reflection steps, then Review and Appointment Brief. The progress indicator counts only the four reflection steps.
 
 1. **Introduction** explains the product, privacy model, limits, design rationale, and sources before any sensitive questions appear.
 2. **Experience** records the user’s own description and timing without interpreting it.
@@ -28,7 +30,7 @@ The current health copy is source-grounded but **has not been clinically reviewe
 
 ## Privacy Model
 
-Answers exist only in the in-memory `SeenState` object for the active page. Refreshing, closing, or navigating away clears them. Seen uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file.
+Answers exist only in the in-memory `SeenState` object for the active page. The brief remains available after the print dialog closes and can be cleared explicitly. Refreshing or closing the tab clears it naturally. Seen uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file.
 
 ## Source Review
 
@@ -62,10 +64,10 @@ npm run build
 npm run preview
 ```
 
-The production preview uses the GitHub Pages project path:
+The production build uses relative asset paths, so the same output works at a GitHub Pages project path or at the root of an independent Vercel deployment:
 
 ```text
-http://127.0.0.1:4173/seen-period-pain/
+http://127.0.0.1:4173/
 ```
 
 The tests verify state semantics, individual clearing, Undo snapshots, prohibited privacy APIs, source-registry fields, and exclusion of the outdated diagnostic-delay placeholder. Browser QA should cover the full journey, partial and skipped answers, editing, Clear and Undo, Exit and Clear All, refresh, printing, keyboard focus, 200% text scaling, reduced motion, and responsive layouts.

@@ -168,9 +168,22 @@ await click('[data-action="go-intro"]');
 
 await click('[data-action="begin"]');
 assert(await focused(), "Experience heading did not receive focus");
+assert(await textIncludes("Four-step reflection"));
 await fill(
   "#experience-text",
   "Synthetic example: cramping that comes and goes.",
+);
+assert.equal(
+  await evaluate(
+    "document.querySelector('[data-status-for=\"experience\"]')?.textContent",
+  ),
+  "Answered",
+);
+assert.equal(
+  await evaluate(
+    'document.querySelector(\'[data-action="clear-answer"][data-key="experience"]\')?.disabled',
+  ),
+  false,
 );
 await click('input[name="timing"]');
 await fill(
@@ -234,6 +247,9 @@ await writeFile(
 );
 await click('[data-action="print"]');
 assert(await textIncludes("My appointment notes"));
+assert(await textIncludes("Print or save another copy"));
+assert(await textIncludes("Your brief is still here."));
+assert(await textIncludes("Synthetic example: cramping that comes and goes."));
 
 await click('[data-action="go-intro"]');
 await click('[data-action="resume"]');

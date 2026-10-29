@@ -5,6 +5,7 @@ import {
   createInitialState,
   hasAnswerData,
   resetAnswer,
+  statusFromContent,
   statusLabel,
 } from "../src/state.ts";
 
@@ -41,4 +42,12 @@ test("a cloned snapshot can restore an individually cleared answer", () => {
   resetAnswer(state, "impact");
   state.impact = snapshot.impact;
   assert.deepEqual(state.impact.entries, [{ area: "School", level: "varies" }]);
+});
+
+test("visible answer content updates its status immediately", () => {
+  assert.equal(statusFromContent("unanswered", true), "answered");
+  assert.equal(statusFromContent("skipped", true), "answered");
+  assert.equal(statusFromContent("prefer-not", true), "answered");
+  assert.equal(statusFromContent("answered", false), "unanswered");
+  assert.equal(statusFromContent("skipped", false), "skipped");
 });
