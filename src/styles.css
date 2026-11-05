@@ -163,6 +163,10 @@ p {
   align-items: center;
   gap: 24px;
 }
+.share-link {
+  gap: 6px;
+  white-space: nowrap;
+}
 .nav-link,
 .text-button {
   display: inline-flex;
@@ -183,6 +187,32 @@ p {
 }
 .text-danger {
   color: #9c3038;
+}
+
+.share-status {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  width: min(360px, calc(100vw - 40px));
+  padding: 14px 16px;
+  border: 1px solid #c5ded9;
+  border-radius: 8px;
+  background: var(--soft-teal);
+  box-shadow: 0 14px 40px rgba(38, 31, 37, 0.18);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.share-copy-source {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .button {
@@ -1108,6 +1138,9 @@ dialog::backdrop {
   .site-header nav .nav-link:nth-child(2) {
     display: none;
   }
+  .share-link {
+    font-size: 0.82rem;
+  }
   .hero {
     min-height: auto;
     padding-top: 48px;
@@ -1265,6 +1298,11 @@ dialog::backdrop {
   }
   .undo-bar {
     justify-content: space-between;
+  }
+  .share-status {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
   }
 }
 

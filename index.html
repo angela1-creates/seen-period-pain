@@ -33,6 +33,14 @@
         <button class="nav-link" type="button" data-action="show-sources">
           Sources &amp; limitations
         </button>
+        <button
+          class="nav-link share-link"
+          type="button"
+          data-action="share"
+          title="Share Seen — your answers are not included"
+        >
+          Share Seen <span aria-hidden="true">↗</span>
+        </button>
       </nav>
     </header>
 
@@ -50,6 +58,13 @@
       id="undo-region"
       class="undo-region screen-only"
       aria-live="polite"
+    ></div>
+    <div
+      id="share-status"
+      class="share-status screen-only"
+      role="status"
+      aria-live="polite"
+      hidden
     ></div>
 
     <dialog

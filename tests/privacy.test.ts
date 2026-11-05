@@ -5,6 +5,7 @@ import test from "node:test";
 const applicationFiles = [
   "index.html",
   "src/main.ts",
+  "src/share.ts",
   "src/state.ts",
   "src/sources.ts",
 ];
@@ -28,6 +29,12 @@ test("application source contains no prohibited persistence, API, analytics, or 
   ).join("\n");
   for (const pattern of prohibitedPatterns)
     assert.doesNotMatch(source, pattern);
+});
+
+test("sharing never includes reflection answers", async () => {
+  const source = await readFile("src/share.ts", "utf8");
+  assert.doesNotMatch(source, /SeenState|state\.|answer|experience\.value/);
+  assert.match(source, /healthcare conversation/);
 });
 
 test("health source registry includes required traceability fields", async () => {

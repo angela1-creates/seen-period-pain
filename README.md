@@ -30,7 +30,7 @@ The current health copy is source-grounded but **has not been clinically reviewe
 
 ## Privacy Model
 
-Answers exist only in the in-memory `SeenState` object for the active page. The brief remains available after the print dialog closes and can be cleared explicitly. Refreshing or closing the tab clears it naturally. Seen uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file.
+Answers exist only in the in-memory `SeenState` object for the active page. The brief remains available after the print dialog closes and can be cleared explicitly. Refreshing or closing the tab clears it naturally. Seen uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file. “Share Seen” sends only fixed introductory copy and the app’s root URL through the browser’s share sheet, or copies that same public message and link; reflection answers are never included.
 
 ## Source Review
 

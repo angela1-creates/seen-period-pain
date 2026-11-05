@@ -2,6 +2,11 @@ import "./styles.css";
 import reflectionImage from "../assets/seen-reflection.jpg";
 import { sourceLink, sources } from "./sources.ts";
 import {
+  buildSeenShareText,
+  seenShareMessage,
+  seenShareTitle,
+} from "./share.ts";
+import {
   cloneState,
   createInitialState,
   hasAnswerData,
@@ -24,6 +29,7 @@ const dialogCopy = document.querySelector<HTMLElement>("#dialog-copy");
 const dialogConfirm = dialog?.querySelector<HTMLButtonElement>(
   'button[value="confirm"]',
 );
+const shareStatus = document.querySelector<HTMLDivElement>("#share-status");
 
 if (
   !app ||
@@ -32,7 +38,8 @@ if (
   !dialog ||
   !dialogTitle ||
   !dialogCopy ||
-  !dialogConfirm
+  !dialogConfirm ||
+  !shareStatus
 ) {
   throw new Error("Seen could not initialize its interface.");
 }
@@ -42,6 +49,7 @@ let undoSnapshot: { key: AnswerKey; state: SeenState } | null = null;
 let dialogMode: "exit" | "reset" = "reset";
 let dialogReturnFocus: HTMLElement | null = null;
 let actionRowCount = 1;
+let shareStatusTimer: number | undefined;
 
 const questionGroups = [
   {
@@ -134,6 +142,71 @@ const selected = (condition: boolean): string => (condition ? " selected" : "");
 const announce = (message: string): void => {
   announcer.textContent = "";
   window.setTimeout(() => (announcer.textContent = message), 20);
+};
+
+const getShareUrl = (): string => {
+  const currentUrl = new URL(window.location.href);
+  const isLocalPreview = ["localhost", "127.0.0.1"].includes(
+    currentUrl.hostname,
+  );
+  return isLocalPreview
+    ? "https://angela1-creates.github.io/seen-period-pain/"
+    : new URL(import.meta.env.BASE_URL, currentUrl.origin).href;
+};
+
+const showShareStatus = (message: string): void => {
+  window.clearTimeout(shareStatusTimer);
+  shareStatus.textContent = message;
+  shareStatus.hidden = false;
+  announce(message);
+  shareStatusTimer = window.setTimeout(() => {
+    shareStatus.hidden = true;
+  }, 5000);
+};
+
+const copyShareMessage = async (message: string): Promise<boolean> => {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(message);
+      return true;
+    } catch {
+      // Use the browser's older copy path when clipboard permission is denied.
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = message;
+  textarea.readOnly = true;
+  textarea.className = "share-copy-source";
+  document.body.append(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+  return copied;
+};
+
+const shareSeen = async (): Promise<void> => {
+  const url = getShareUrl();
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: seenShareTitle,
+        text: seenShareMessage,
+        url,
+      });
+      showShareStatus("Seen shared. Your answers were not included.");
+      return;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+    }
+  }
+
+  const copied = await copyShareMessage(buildSeenShareText(url));
+  showShareStatus(
+    copied
+      ? "Message and link copied. Your answers were not included."
+      : "Couldn’t open sharing or copy the link. Please try again.",
+  );
 };
 
 const hasJourneyData = (): boolean => hasAnswerData(state);
@@ -625,6 +698,7 @@ const handleClick = (event: MouseEvent): void => {
   if (target instanceof HTMLAnchorElement) event.preventDefault();
   const action = target.dataset.action;
   if (action === "begin") setView("experience");
+  if (action === "share") void shareSeen();
   if (action === "resume") setView("experience");
   if (action === "go-intro") setView("introduction");
   if (action === "show-how" || action === "show-sources") {
