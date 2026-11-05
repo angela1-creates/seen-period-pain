@@ -1,5 +1,6 @@
 import "./styles.css";
 import reflectionImage from "../assets/seen-reflection.jpg";
+import { feedbackMailto } from "./feedback.ts";
 import { sourceLink, sources } from "./sources.ts";
 import {
   buildSeenShareText,
@@ -30,6 +31,10 @@ const dialogConfirm = dialog?.querySelector<HTMLButtonElement>(
   'button[value="confirm"]',
 );
 const shareStatus = document.querySelector<HTMLDivElement>("#share-status");
+const feedbackDialog =
+  document.querySelector<HTMLDialogElement>("#feedback-dialog");
+const feedbackEmailLink =
+  document.querySelector<HTMLAnchorElement>("#feedback-email");
 
 if (
   !app ||
@@ -39,7 +44,9 @@ if (
   !dialogTitle ||
   !dialogCopy ||
   !dialogConfirm ||
-  !shareStatus
+  !shareStatus ||
+  !feedbackDialog ||
+  !feedbackEmailLink
 ) {
   throw new Error("Seen could not initialize its interface.");
 }
@@ -50,6 +57,8 @@ let dialogMode: "exit" | "reset" = "reset";
 let dialogReturnFocus: HTMLElement | null = null;
 let actionRowCount = 1;
 let shareStatusTimer: number | undefined;
+
+feedbackEmailLink.href = feedbackMailto;
 
 const questionGroups = [
   {
@@ -286,6 +295,7 @@ const renderIntroduction = (): string => {
       <div class="editorial-copy">
         <p>Remembering what happened, when it happened, and what changed in daily life can feel like a lot. Seen gives you a quiet structure for organizing those details without interpreting them.</p>
         <p data-source-id="NICE-NG73-2024">Everyone experiences and describes pain differently. ${sourceLink("NICE-NG73-2024", "Source")}</p>
+        <p class="compact-privacy"><strong>Private by design.</strong> Your answers stay only in this tab and disappear when you refresh or close it.</p>
       </div>
     </section>
 
@@ -302,28 +312,19 @@ const renderIntroduction = (): string => {
       <p class="source-statement" data-source-id="NICE-NG73-2024">Keeping notes about pain and other experiences can help you discuss them with a healthcare professional. ${sourceLink("NICE-NG73-2024", "Source")}</p>
     </section>
 
-    <section class="privacy-section" aria-labelledby="privacy-title">
-      <div><p class="eyebrow">Privacy by design</p><h2 id="privacy-title">Nothing you enter leaves this page.</h2></div>
-      <div class="privacy-grid">
-        <article><h3>Only this tab</h3><p>Answers stay in temporary application memory. Print or save your brief before refreshing or closing this tab.</p></article>
-        <article><h3>No account or upload</h3><p>There is no sign-in, database, analytics, external API, or automatic download.</p></article>
-        <article><h3>You stay in control</h3><p>Skip, edit, clear, or choose “Prefer not to answer” at every sensitive step.</p></article>
-      </div>
-      <div class="boundary-panel"><h3>Product boundaries</h3><p>Seen cannot determine the cause of pain, calculate risk, recommend treatment or medication, or tell you whether something needs urgent care. If you feel worried or unsafe, contact a healthcare professional or a trusted adult.</p><span>Safety wording requires licensed clinical review.</span></div>
-    </section>
-
-    <aside class="review-status" aria-labelledby="review-status-title">
-      <p class="eyebrow">Clinical review status</p>
-      <h2 id="review-status-title">Health copy is sourced, but not yet clinically reviewed.</h2>
-      <p>The wording and appointment-question library still require review by a licensed adolescent-health or gynecology professional before release.</p>
-    </aside>
-
     <section id="sources" class="sources-section" aria-labelledby="sources-title">
       <div class="section-heading"><p class="eyebrow">Sources &amp; limitations</p><h2 id="sources-title">Traceable, not yet clinically reviewed.</h2><p>Health copy is grounded in the sources below. A licensed adolescent-health or gynecology professional has not yet reviewed Seen.</p></div>
+      <details class="privacy-details">
+        <summary>Privacy and product boundaries</summary>
+        <div class="privacy-details-content">
+          <div><h3>Nothing you enter leaves this page.</h3><p>Answers remain in temporary memory in this tab. There is no account, upload, database, analytics, or external API. Print or save your brief before refreshing or closing the tab.</p></div>
+          <div><h3>You stay in control.</h3><p>You can skip, edit, or clear answers at any time. Seen cannot determine the cause of pain, calculate risk, recommend treatment or medication, or tell you whether something needs urgent care. If you feel worried or unsafe, contact a healthcare professional or a trusted adult.</p></div>
+        </div>
+      </details>
       <div class="source-list">${sources.map((source) => `<article><div><span>${source.organization}</span><strong>${escapeHtml(source.title)}</strong></div><p>${escapeHtml(source.supportedStatement)}</p><p class="source-meta">${source.publicationDate} · Accessed ${source.accessed} · Clinical review required</p><a href="${source.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a></article>`).join("")}</div>
     </section>
 
-    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><a href="https://angela1-creates.github.io/projects/seen/" target="_blank" rel="noopener noreferrer">View the design case study <span aria-hidden="true">↗</span></a></footer>
+    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><div class="footer-actions"><button class="footer-link" type="button" data-action="feedback">Share feedback</button><a href="https://angela1-creates.github.io/projects/seen/" target="_blank" rel="noopener noreferrer">View the design case study <span aria-hidden="true">↗</span></a></div></footer>
   </div>`;
 };
 
@@ -503,7 +504,7 @@ const renderBrief = (): string =>
     </div>
     <footer><p>Seen did not analyze, diagnose, or recommend anything from these notes.</p><p>This brief was generated locally in the browser.</p></footer>
   </article>
-  <div class="post-brief screen-only"><button class="text-button" data-action="go-intro">Return to introduction</button><button class="text-button" data-action="show-sources">Read sources and limitations</button><button class="text-button text-danger" data-action="reset">Clear brief and answers</button></div>
+  <div class="post-brief screen-only"><button class="text-button" data-action="feedback">Share feedback</button><button class="text-button" data-action="go-intro">Return to introduction</button><button class="text-button" data-action="show-sources">Read sources and limitations</button><button class="text-button text-danger" data-action="reset">Clear brief and answers</button></div>
 </div>`);
 
 const render = (): void => {
@@ -699,6 +700,7 @@ const handleClick = (event: MouseEvent): void => {
   const action = target.dataset.action;
   if (action === "begin") setView("experience");
   if (action === "share") void shareSeen();
+  if (action === "feedback") feedbackDialog.showModal();
   if (action === "resume") setView("experience");
   if (action === "go-intro") setView("introduction");
   if (action === "show-how" || action === "show-sources") {
@@ -870,3 +872,4 @@ window.addEventListener("afterprint", () => {
 });
 
 render();
+document.documentElement.dataset.ready = "true";

@@ -8,6 +8,14 @@
       content="Seen helps adolescents organize period-pain experiences and prepare for a healthcare conversation."
     />
     <meta name="theme-color" content="#fffaf5" />
+    <style>
+      .pre-render-hidden {
+        visibility: hidden;
+      }
+      html[data-ready="true"] .pre-render-hidden {
+        visibility: visible;
+      }
+    </style>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23563755'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia,serif' font-size='42' fill='%23fffaf5'%3ES%3C/text%3E%3C/svg%3E"
@@ -15,8 +23,10 @@
     <title>Seen | A Period-Pain Conversation Companion</title>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to main content</a>
-    <header class="site-header screen-only">
+    <a class="skip-link pre-render-hidden" href="#main-content"
+      >Skip to main content</a
+    >
+    <header class="site-header screen-only pre-render-hidden">
       <a
         class="wordmark"
         href="#"
@@ -83,6 +93,47 @@
           <button class="button button-danger" value="confirm">
             Clear and continue
           </button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      id="feedback-dialog"
+      aria-labelledby="feedback-title"
+      aria-describedby="feedback-copy feedback-privacy"
+    >
+      <form method="dialog" class="dialog-panel feedback-panel">
+        <p class="eyebrow">Help improve Seen</p>
+        <h2 id="feedback-title">What would make this more helpful?</h2>
+        <p id="feedback-copy">
+          A few specific thoughts are more useful than a formal review. You can
+          tell Angela what helped, what felt unclear, or what you wished Seen
+          did differently.
+        </p>
+        <ul class="feedback-prompts" aria-label="Feedback ideas">
+          <li>What felt helpful?</li>
+          <li>What felt unclear or missing?</li>
+          <li>What would make Seen more useful?</li>
+        </ul>
+        <p id="feedback-privacy" class="feedback-privacy">
+          Please don’t include personal health or identifying information. Your
+          Seen answers are never attached.
+        </p>
+        <p class="feedback-contact">
+          Prefer another email app?
+          <strong>angelacreates.projects@gmail.com</strong>
+        </p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel">
+            Not now
+          </button>
+          <a
+            id="feedback-email"
+            class="button button-primary"
+            href="mailto:angelacreates.projects@gmail.com"
+          >
+            Email feedback
+          </a>
         </div>
       </form>
     </dialog>

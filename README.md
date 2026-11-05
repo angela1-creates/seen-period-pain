@@ -16,7 +16,7 @@ The entry page is followed by four numbered reflection steps, then Review and Ap
 2. **Experience** records the user’s own description and timing without interpreting it.
 3. **Impact** records effects on school, sleep, physical activity, social plans, concentration, and everyday tasks.
 4. **Previous Actions** records what the user already tried and what they noticed. Seen does not supply recommendations.
-5. **Questions** groups a fixed nine-question library under Understanding, Next steps, and Support; shows a five-question selection limit; accepts one custom question; and offers an optional “Anything else worth mentioning?” note. Clinical-review status is kept outside the active form in a dedicated review-status notice.
+5. **Questions** groups a fixed nine-question library under Understanding, Next steps, and Support; shows a five-question selection limit; accepts one custom question; and offers an optional “Anything else worth mentioning?” note.
 6. **Review** shows exactly what was entered and preserves missing, skipped, and prefer-not-to-answer states.
 7. **Appointment Brief** formats the user’s answers for local browser printing or the browser’s Save as PDF option. Users are warned to print or save before refreshing or closing the tab.
 

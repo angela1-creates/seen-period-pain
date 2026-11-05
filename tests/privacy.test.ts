@@ -1,10 +1,17 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import {
+  feedbackBody,
+  feedbackEmail,
+  feedbackMailto,
+  feedbackSubject,
+} from "../src/feedback.ts";
 
 const applicationFiles = [
   "index.html",
   "src/main.ts",
+  "src/feedback.ts",
   "src/share.ts",
   "src/state.ts",
   "src/sources.ts",
@@ -31,10 +38,58 @@ test("application source contains no prohibited persistence, API, analytics, or 
     assert.doesNotMatch(source, pattern);
 });
 
+test("feedback is guided without including Seen answers", async () => {
+  const source = await readFile("src/feedback.ts", "utf8");
+  const html = await readFile("index.html", "utf8");
+  assert.match(source, /angelacreates\.projects@gmail\.com/);
+  assert.match(source, /What felt helpful/);
+  assert.match(source, /What felt unclear or missing/);
+  assert.match(source, /What would make Seen more useful/);
+  assert.match(
+    source,
+    /don’t include personal health or identifying information/,
+  );
+  assert.doesNotMatch(source, /SeenState|state\.|experience\.value/);
+  assert.match(html, /Prefer another email app/);
+  assert.match(html, /angelacreates\.projects@gmail\.com/);
+
+  const link = new URL(feedbackMailto);
+  assert.equal(link.protocol, "mailto:");
+  assert.equal(link.pathname, feedbackEmail);
+  assert.equal(link.searchParams.get("subject"), feedbackSubject);
+  assert.equal(link.searchParams.get("body"), feedbackBody);
+});
+
 test("sharing never includes reflection answers", async () => {
   const source = await readFile("src/share.ts", "utf8");
   assert.doesNotMatch(source, /SeenState|state\.|answer|experience\.value/);
   assert.match(source, /healthcare conversation/);
+});
+
+test("the initial shell stays hidden until the complete introduction renders", async () => {
+  const html = await readFile("index.html", "utf8");
+  const application = await readFile("src/main.ts", "utf8");
+  assert.match(html, /class="skip-link pre-render-hidden"/);
+  assert.match(html, /site-header screen-only pre-render-hidden/);
+  assert.match(html, /html\[data-ready="true"\] \.pre-render-hidden/);
+  assert.match(
+    application,
+    /render\(\);\s*document\.documentElement\.dataset\.ready/,
+  );
+});
+
+test("privacy reassurance is concise before the journey and details stay near sources", async () => {
+  const source = await readFile("src/main.ts", "utf8");
+  assert.match(source, /class="compact-privacy"/);
+  assert.match(source, /class="privacy-details"/);
+  assert.doesNotMatch(source, /class="privacy-section"/);
+  assert.ok(
+    source.indexOf('class="compact-privacy"') <
+      source.indexOf('id="how-seen-works"'),
+  );
+  assert.ok(
+    source.indexOf('class="privacy-details"') > source.indexOf('id="sources"'),
+  );
 });
 
 test("health source registry includes required traceability fields", async () => {
