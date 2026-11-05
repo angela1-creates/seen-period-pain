@@ -324,7 +324,7 @@ const renderIntroduction = (): string => {
       <div class="source-list">${sources.map((source) => `<article><div><span>${source.organization}</span><strong>${escapeHtml(source.title)}</strong></div><p>${escapeHtml(source.supportedStatement)}</p><p class="source-meta">${source.publicationDate} · Accessed ${source.accessed} · Clinical review required</p><a href="${source.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a></article>`).join("")}</div>
     </section>
 
-    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><div class="footer-actions"><button class="footer-link" type="button" data-action="feedback">Share feedback</button><a href="https://angela1-creates.github.io/projects/seen/" target="_blank" rel="noopener noreferrer">View the design case study <span aria-hidden="true">↗</span></a></div></footer>
+    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><div class="footer-actions"><button class="footer-link" type="button" data-action="feedback">Share feedback</button></div></footer>
   </div>`;
 };
 

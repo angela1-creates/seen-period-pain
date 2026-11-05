@@ -92,6 +92,12 @@ test("privacy reassurance is concise before the journey and details stay near so
   );
 });
 
+test("the live experience does not link back to the portfolio case study", async () => {
+  const source = await readFile("src/main.ts", "utf8");
+  assert.doesNotMatch(source, /View the design case study/);
+  assert.doesNotMatch(source, /angela1-creates\.github\.io\/projects\/seen/);
+});
+
 test("health source registry includes required traceability fields", async () => {
   const source = await readFile("src/sources.ts", "utf8");
   for (const field of [
