@@ -1,5 +1,5 @@
 export const feedbackEmail = "angelacreates.projects@gmail.com";
-export const feedbackSubject = "[Seen] Feedback";
+export const feedbackSubject = "[SEEN] Feedback";
 
 export const feedbackBody = `Hi Angela,
 
@@ -11,7 +11,7 @@ What felt helpful?
 What felt unclear or missing?
 
 
-What would make Seen more useful?
+What would make SEEN more useful?
 
 
 Were you able to prepare appointment notes? Yes / No

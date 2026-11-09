@@ -297,7 +297,7 @@ p {
   max-width: 660px;
   margin-bottom: 24px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 4.6rem;
+  font-size: clamp(3rem, 5vw, 4.25rem);
   font-weight: 500;
   line-height: 0.98;
   color: var(--plum);
@@ -308,6 +308,36 @@ p {
   color: var(--muted);
   font-size: 1.2rem;
   line-height: 1.65;
+}
+.answer-privacy {
+  max-width: 640px;
+  margin: 0 0 24px;
+  padding: 20px 22px;
+  border: 1px solid #c5ded9;
+  border-radius: 8px;
+  background: var(--soft-teal);
+}
+.answer-privacy h2 {
+  margin-bottom: 10px;
+  color: var(--plum);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+}
+.answer-privacy ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+  color: #3f4e4c;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.shared-device-note {
+  max-width: 620px;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 .hero-actions {
   display: flex;
@@ -509,6 +539,10 @@ p {
   margin: 0;
   color: #cfc4cc;
 }
+.privacy-details-content a {
+  color: #f5d7d3;
+  font-weight: 700;
+}
 .source-list {
   max-width: 1180px;
   margin: 0 auto;
@@ -633,6 +667,149 @@ p {
   border-radius: 8px;
   background: white;
   box-shadow: 0 18px 50px rgba(63, 42, 58, 0.08);
+}
+
+.worksheet-shell {
+  min-height: calc(100vh - 68px);
+  padding: 40px clamp(16px, 4vw, 48px) 64px;
+  background: #f7f1ed;
+}
+.worksheet-intro,
+.print-worksheet {
+  max-width: 920px;
+  margin: 0 auto;
+}
+.worksheet-intro {
+  margin-bottom: 24px;
+  padding: 28px 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+.worksheet-intro h1 {
+  margin-bottom: 12px;
+  color: var(--plum);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.worksheet-intro > p:not(.eyebrow) {
+  max-width: 720px;
+  color: var(--muted);
+}
+.print-worksheet {
+  padding: 38px;
+  border: 1px solid var(--ink);
+  background: white;
+}
+.print-worksheet > header,
+.print-worksheet > footer {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.print-worksheet > header {
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.print-worksheet > header h1 {
+  margin: 3px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+}
+.print-worksheet > header p,
+.print-worksheet > footer {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.worksheet-section {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+.worksheet-section h2 {
+  margin-bottom: 8px;
+  color: var(--plum);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+}
+.worksheet-section h3 {
+  margin: 22px 0 8px;
+  font-size: 0.95rem;
+}
+.worksheet-help {
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.worksheet-writing-space {
+  min-height: 72px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    var(--line) 32px
+  );
+}
+.worksheet-writing-space-large {
+  min-height: 128px;
+}
+.worksheet-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 22px;
+  margin-bottom: 20px;
+  font-size: 0.86rem;
+}
+.worksheet-line {
+  display: flex;
+  min-height: 36px;
+  align-items: end;
+  border-bottom: 1px solid var(--ink);
+}
+.worksheet-line span {
+  padding: 0 8px 4px 0;
+  background: white;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.worksheet-table {
+  border-top: 1px solid var(--line);
+}
+.worksheet-table > div {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) repeat(4, minmax(100px, 0.8fr));
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.75rem;
+}
+.worksheet-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.worksheet-question-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 12px;
+}
+.worksheet-question-groups h3 {
+  color: var(--plum);
+}
+.worksheet-question-groups p {
+  margin-bottom: 9px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.print-worksheet > footer {
+  padding-top: 18px;
+}
+.print-worksheet > footer p {
+  max-width: 48%;
+  margin: 0;
 }
 .step-heading {
   max-width: 720px;
@@ -1210,8 +1387,29 @@ dialog::backdrop {
   }
   .journey-card,
   .review-page,
-  .brief-page {
+  .brief-page,
+  .worksheet-intro,
+  .print-worksheet {
     padding: 24px 18px;
+  }
+  .worksheet-shell {
+    min-height: calc(100vh - 60px);
+    padding: 18px 12px 40px;
+  }
+  .worksheet-options,
+  .worksheet-actions,
+  .worksheet-question-groups {
+    grid-template-columns: 1fr;
+  }
+  .worksheet-table > div {
+    grid-template-columns: 1fr 1fr;
+  }
+  .print-worksheet > header,
+  .print-worksheet > footer {
+    flex-direction: column;
+  }
+  .print-worksheet > footer p {
+    max-width: none;
   }
   .choice-grid {
     grid-template-columns: 1fr;
@@ -1351,7 +1549,8 @@ dialog::backdrop {
   main,
   #app,
   .journey-shell,
-  .brief-page {
+  .brief-page,
+  .worksheet-shell {
     display: block;
     min-height: 0;
     margin: 0;
@@ -1365,6 +1564,24 @@ dialog::backdrop {
     border: 1px solid #222;
     padding: 20px;
     break-inside: avoid;
+  }
+  .print-worksheet {
+    display: block;
+    max-width: none;
+    border: 0;
+    padding: 0;
+  }
+  .worksheet-section {
+    break-inside: avoid;
+  }
+  .worksheet-page-break {
+    break-before: page;
+  }
+  .worksheet-table > div {
+    grid-template-columns: minmax(100px, 1fr) repeat(4, minmax(85px, 0.8fr));
+  }
+  .worksheet-question-groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .print-brief h1 {
     font-size: 22pt;

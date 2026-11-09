@@ -74,7 +74,7 @@ export const sources: SourceRecord[] = [
     publicationDate: "15 October 2025",
     accessed: "8 September 2026",
     supportedStatement:
-      "Endometriosis experiences vary and can affect daily life, but Seen does not use this information diagnostically.",
+      "Endometriosis experiences vary and can affect daily life, but SEEN does not use this information diagnostically.",
     clinicalReview: "required",
   },
   {
@@ -85,7 +85,7 @@ export const sources: SourceRecord[] = [
     publicationDate: "March 2026",
     accessed: "8 September 2026",
     supportedStatement:
-      "Current clinical guidance addresses adolescents with symptoms suggestive of endometriosis; Seen does not apply diagnostic criteria.",
+      "Current clinical guidance addresses adolescents with symptoms suggestive of endometriosis; SEEN does not apply diagnostic criteria.",
     clinicalReview: "required",
   },
 ];

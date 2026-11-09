@@ -48,7 +48,7 @@ if (
   !feedbackDialog ||
   !feedbackEmailLink
 ) {
-  throw new Error("Seen could not initialize its interface.");
+  throw new Error("SEEN could not initialize its interface.");
 }
 
 let state: SeenState = createInitialState();
@@ -121,6 +121,7 @@ const outcomeLabels: Record<ActionOutcome, string> = {
 
 const viewNames: Record<JourneyView, string> = {
   introduction: "Introduction",
+  worksheet: "Blank worksheet",
   experience: "Experience",
   impact: "Impact",
   actions: "Previous actions",
@@ -203,7 +204,7 @@ const shareSeen = async (): Promise<void> => {
         text: seenShareMessage,
         url,
       });
-      showShareStatus("Seen shared. Your answers were not included.");
+      showShareStatus("SEEN shared. Your answers were not included.");
       return;
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
@@ -271,15 +272,25 @@ const renderIntroduction = (): string => {
     ${paused ? `<aside class="paused-bar" aria-label="Paused reflection"><p><strong>Your reflection is paused.</strong> Answers remain only in this tab.</p><div><button class="button button-small" data-action="resume">Resume</button><button class="text-button text-danger" data-action="reset">Clear all</button></div></aside>` : ""}
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">Period-pain conversation companion</p>
-        <h1 id="hero-title" data-view-heading tabindex="-1">Put your experience into words.</h1>
-        <p class="hero-lede">Seen helps you describe what has been happening, how it affects everyday life, and what you want to ask at an appointment.</p>
-        <div class="hero-actions">
-          <button class="button button-primary" type="button" data-action="begin">Prepare my appointment notes</button>
-          <button class="button button-secondary" type="button" data-action="show-how">How Seen works</button>
+        <p class="eyebrow">SEEN</p>
+        <h1 id="hero-title" data-view-heading tabindex="-1">Prepare a period-pain brief for a healthcare appointment.</h1>
+        <p class="hero-lede">SEEN gives you a five-minute structure for organizing what you have noticed, how it affects daily life, and what you want to ask.</p>
+        <div class="answer-privacy" aria-labelledby="answer-privacy-title">
+          <h2 id="answer-privacy-title">What happens to your answers</h2>
+          <ul>
+            <li>Angela cannot see your answers.</li>
+            <li>SEEN does not send your answers to a server, analytics service, or cloud storage.</li>
+            <li>Your answers remain temporarily in this open browser tab.</li>
+            <li>Refreshing or closing the tab clears your SEEN session.</li>
+            <li>At the end, you can print or save a PDF using your browser.</li>
+          </ul>
         </div>
-        <ul class="hero-reassurance" aria-label="About this reflection"><li>About 5 minutes</li><li>No account</li><li>Answers stay in this tab</li></ul>
-        <p class="boundary-note">Seen organizes what you enter. It does not diagnose, interpret your answers, or recommend treatment.</p>
+        <div class="hero-actions">
+          <button class="button button-primary" type="button" data-action="begin">Prepare my brief</button>
+          <button class="button button-secondary" type="button" data-action="worksheet">Use the blank worksheet</button>
+        </div>
+        <p class="shared-device-note"><strong>For more privacy, use a personal device.</strong> On a shared or school device, close the tab when finished and remove any PDF or printout you create.</p>
+        <p class="boundary-note">SEEN organizes your words. It does not diagnose, interpret your answers, or recommend treatment.</p>
       </div>
       <figure class="hero-visual">
         <img src="${reflectionImage}" alt="A notebook, question cards, and a pen arranged for a calm moment of reflection" />
@@ -289,19 +300,18 @@ const renderIntroduction = (): string => {
 
     <section class="intro-band conversation-section" aria-labelledby="conversation-title">
       <div class="section-heading">
-        <p class="eyebrow">Why Seen exists</p>
+        <p class="eyebrow">Why SEEN exists</p>
         <h2 id="conversation-title">A hard experience can be hard to explain.</h2>
       </div>
       <div class="editorial-copy">
-        <p>Remembering what happened, when it happened, and what changed in daily life can feel like a lot. Seen gives you a quiet structure for organizing those details without interpreting them.</p>
-        <p data-source-id="NICE-NG73-2024">Everyone experiences and describes pain differently. ${sourceLink("NICE-NG73-2024", "Source")}</p>
-        <p class="compact-privacy"><strong>Private by design.</strong> Your answers stay only in this tab and disappear when you refresh or close it.</p>
+        <p>Remembering what happened, when it happened, and what changed in daily life can feel like a lot. SEEN provides guided prompts and turns your own words into a concise appointment brief.</p>
+        <p>Prefer not to type health information into a website? The printable blank worksheet contains the same prompts and can be completed by hand.</p>
       </div>
     </section>
 
     <section id="how-seen-works" class="help-section" aria-labelledby="help-title">
       <div class="section-heading">
-        <p class="eyebrow">How Seen works</p>
+        <p class="eyebrow">How SEEN works</p>
         <h2 id="help-title">From your experience to a clearer conversation.</h2>
       </div>
       <div class="feature-grid">
@@ -309,28 +319,94 @@ const renderIntroduction = (): string => {
         <article><span>02</span><h3>Show the impact</h3><p>Note timing, what has been harder, and things you have already tried.</p></article>
         <article><span>03</span><h3>Prepare for the conversation</h3><p>Choose questions and print a brief in your own words.</p></article>
       </div>
-      <p class="source-statement" data-source-id="NICE-NG73-2024">Keeping notes about pain and other experiences can help you discuss them with a healthcare professional. ${sourceLink("NICE-NG73-2024", "Source")}</p>
+      <p class="source-statement">The structure is the value: guided prompts, a focused question library, and a concise format for the appointment conversation. You choose the interactive or paper version.</p>
     </section>
 
     <section id="sources" class="sources-section" aria-labelledby="sources-title">
-      <div class="section-heading"><p class="eyebrow">Sources &amp; limitations</p><h2 id="sources-title">Traceable, not yet clinically reviewed.</h2><p>Health copy is grounded in the sources below. A licensed adolescent-health or gynecology professional has not yet reviewed Seen.</p></div>
+      <div class="section-heading"><p class="eyebrow">Sources &amp; limitations</p><h2 id="sources-title">Traceable, not yet clinically reviewed.</h2><p>Health copy is grounded in the sources below. A licensed adolescent-health or gynecology professional has not yet reviewed SEEN.</p></div>
       <details class="privacy-details">
         <summary>Privacy and product boundaries</summary>
         <div class="privacy-details-content">
-          <div><h3>Nothing you enter leaves this page.</h3><p>Answers remain in temporary memory in this tab. There is no account, upload, database, analytics, or external API. Print or save your brief before refreshing or closing the tab.</p></div>
-          <div><h3>You stay in control.</h3><p>You can skip, edit, or clear answers at any time. Seen cannot determine the cause of pain, calculate risk, recommend treatment or medication, or tell you whether something needs urgent care. If you feel worried or unsafe, contact a healthcare professional or a trusted adult.</p></div>
+          <div><h3>Your answer content stays in the tab.</h3><p>SEEN keeps answers in temporary page memory. It does not send answer content to Angela, a server, analytics, or cloud storage. Like any hosted site, the hosting provider receives routine request information such as IP address and device or browser details; your answers are not included in those requests. Read the <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener noreferrer">Vercel privacy notice</a> or <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub privacy statement</a> for the public deployments.</p></div>
+          <div><h3>You stay in control.</h3><p>You can skip, edit, or clear answers at any time. SEEN cannot determine the cause of pain, calculate risk, recommend treatment or medication, or tell you whether something needs urgent care. If you feel worried or unsafe, contact a healthcare professional or a trusted adult.</p></div>
         </div>
       </details>
       <div class="source-list">${sources.map((source) => `<article><div><span>${source.organization}</span><strong>${escapeHtml(source.title)}</strong></div><p>${escapeHtml(source.supportedStatement)}</p><p class="source-meta">${source.publicationDate} · Accessed ${source.accessed} · Clinical review required</p><a href="${source.url}" target="_blank" rel="noopener noreferrer">Open source <span aria-hidden="true">↗</span></a></article>`).join("")}</div>
     </section>
 
-    <footer class="site-footer"><p>Seen is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><div class="footer-actions"><button class="footer-link" type="button" data-action="feedback">Share feedback</button></div></footer>
+    <footer class="site-footer"><p>SEEN is an educational conversation-preparation tool. Its health copy has not yet been clinically reviewed.</p><div class="footer-actions"><button class="footer-link" type="button" data-action="feedback">Share feedback</button></div></footer>
   </div>`;
 };
 
+const worksheetLine = (label?: string): string =>
+  `<div class="worksheet-line">${label ? `<span>${label}</span>` : ""}</div>`;
+
+const renderWorksheet = (): string => `
+  <section class="worksheet-shell">
+    <div class="worksheet-intro screen-only">
+      <p class="eyebrow">Blank worksheet</p>
+      <h1 data-view-heading tabindex="-1">Use the same prompts without entering anything online.</h1>
+      <p>Print this blank worksheet or save an empty PDF, then complete it on your own device or by hand. SEEN does not receive what you write on it.</p>
+      <div class="hero-actions">
+        <button class="button button-secondary" type="button" data-action="go-intro">Back to introduction</button>
+        <button class="button button-primary" type="button" data-action="print">Print or save blank PDF</button>
+      </div>
+    </div>
+
+    <article class="print-worksheet" aria-label="SEEN blank period-pain worksheet">
+      <header>
+        <div><span class="brief-mark">SEEN</span><h1>Period-pain appointment worksheet</h1></div>
+        <p>Complete only what feels useful.</p>
+      </header>
+
+      <section class="worksheet-section">
+        <h2>1. What have I been experiencing?</h2>
+        <p class="worksheet-help">Describe what you noticed in your own words—how it feels, where you notice it, or anything else that matters.</p>
+        <div class="worksheet-writing-space worksheet-writing-space-large"></div>
+        <h3>When do I notice it?</h3>
+        <div class="worksheet-options">${timingOptions.map((option) => `<span>□ ${option}</span>`).join("")}</div>
+        ${worksheetLine("Anything else about the timing?")}
+      </section>
+
+      <section class="worksheet-section worksheet-page-break">
+        <h2>2. What has been harder?</h2>
+        <p class="worksheet-help">For each area that fits, note whether it was a little harder, much harder, varied, or you are not sure.</p>
+        <div class="worksheet-table">
+          ${[...impactAreas, "Another area"].map((area) => `<div><strong>${area}</strong><span>□ A little harder</span><span>□ Much harder</span><span>□ It varies</span><span>□ I’m not sure</span></div>`).join("")}
+        </div>
+      </section>
+
+      <section class="worksheet-section">
+        <h2>3. What have I already tried?</h2>
+        <p class="worksheet-help">Record only what you remember. This worksheet does not recommend or evaluate any action.</p>
+        <div class="worksheet-actions">
+          ${[1, 2, 3].map(() => `<div>${worksheetLine("What I tried")}${worksheetLine("What I noticed")}</div>`).join("")}
+        </div>
+      </section>
+
+      <section class="worksheet-section worksheet-page-break">
+        <h2>4. What do I want to ask?</h2>
+        <p class="worksheet-help">Choose up to five questions, or write your own.</p>
+        <div class="worksheet-question-groups">
+          ${questionGroups.map((group) => `<div><h3>${group.title}</h3>${group.questions.map((question) => `<p>□ ${question}</p>`).join("")}</div>`).join("")}
+        </div>
+        ${worksheetLine("My own question")}
+        ${worksheetLine()}
+      </section>
+
+      <section class="worksheet-section">
+        <h2>Anything else worth mentioning?</h2>
+        <p class="worksheet-help">You might note changes over time, sleep, bleeding, digestion or urination, or anything else you want to discuss.</p>
+        <div class="worksheet-writing-space worksheet-writing-space-large"></div>
+      </section>
+
+      <footer><p>SEEN organizes your words. It does not diagnose, interpret answers, or recommend treatment.</p><p>This blank worksheet contains no information entered into SEEN.</p></footer>
+    </article>
+  </section>`;
+
 const renderExperience = (): string =>
   renderJourneyShell(`<div class="journey-card">
-  <div class="step-heading"><p class="eyebrow">Experience</p><h1 data-view-heading tabindex="-1">What have you been experiencing?</h1><p>Use your own words. Seen will not interpret or label what you write.</p></div>
+  <div class="step-heading"><p class="eyebrow">Experience</p><h1 data-view-heading tabindex="-1">What have you been experiencing?</h1><p>Use your own words. SEEN will not interpret or label what you write.</p></div>
   <form id="experience-form">
     <fieldset class="question-block"><legend>Describe what you noticed</legend><p class="field-help">You could write about how it feels, where you notice it, or anything else that matters to you.</p>
       <textarea id="experience-text" name="experience" maxlength="280" rows="5" placeholder="In my own words…">${escapeHtml(state.experience.value)}</textarea>
@@ -381,7 +457,7 @@ const renderActions = (): string => {
     (_, index) => state.actions.items[index],
   );
   return renderJourneyShell(`<div class="journey-card">
-    <div class="step-heading"><p class="eyebrow">Previous actions</p><h1 data-view-heading tabindex="-1">What have you already tried?</h1><p>Record only what you remember. Seen does not recommend or evaluate any action.</p></div>
+    <div class="step-heading"><p class="eyebrow">Previous actions</p><h1 data-view-heading tabindex="-1">What have you already tried?</h1><p>Record only what you remember. SEEN does not recommend or evaluate any action.</p></div>
     <form id="actions-form"><fieldset class="question-block"><legend>Things I tried</legend><div id="action-rows" class="action-rows">${rows
       .map(
         (item, index) =>
@@ -493,7 +569,7 @@ const renderBrief = (): string =>
   renderJourneyShell(`<div class="brief-page">
   <div class="brief-intro screen-only"><p class="eyebrow">Appointment brief</p><h1 data-view-heading tabindex="-1">Ready when you are.</h1><p><strong>User-controlled output:</strong> print or save the final brief as a PDF. <strong>Your brief stays available in this tab after the print dialog closes, whether or not you print.</strong> It disappears when you refresh or close the tab, or when you explicitly clear it.</p><p class="print-status" data-print-status hidden>Your brief is still here. You can print or save another copy, edit your answers, or clear it when you are finished.</p><div><button class="button button-secondary" type="button" data-action="back" data-view="review">Back to review</button><button class="button button-primary" type="button" data-action="print">Print or save as PDF</button></div></div>
   <article class="print-brief" aria-label="My appointment notes">
-    <header><div><span class="brief-mark">Seen</span><h1>My appointment notes</h1></div><p>Prepared from my own answers</p></header>
+    <header><div><span class="brief-mark">SEEN</span><h1>My appointment notes</h1></div><p>Prepared from my own answers</p></header>
     <div class="brief-grid">
       ${renderBriefRow("What I experienced", "experience", experienceSummary())}
       ${renderBriefRow("When I noticed it", "timing", timingSummary())}
@@ -502,7 +578,7 @@ const renderBrief = (): string =>
       ${renderBriefRow("Personal notes", "notes", notesSummary())}
       ${renderBriefRow("Questions I want to ask", "questions", questionsSummary())}
     </div>
-    <footer><p>Seen did not analyze, diagnose, or recommend anything from these notes.</p><p>This brief was generated locally in the browser.</p></footer>
+    <footer><p>SEEN did not analyze, diagnose, or recommend anything from these notes.</p><p>This brief was generated locally in the browser.</p></footer>
   </article>
   <div class="post-brief screen-only"><button class="text-button" data-action="feedback">Share feedback</button><button class="text-button" data-action="go-intro">Return to introduction</button><button class="text-button" data-action="show-sources">Read sources and limitations</button><button class="text-button text-danger" data-action="reset">Clear brief and answers</button></div>
 </div>`);
@@ -510,6 +586,7 @@ const renderBrief = (): string =>
 const render = (): void => {
   const views: Record<JourneyView, () => string> = {
     introduction: renderIntroduction,
+    worksheet: renderWorksheet,
     experience: renderExperience,
     impact: renderImpact,
     actions: renderActions,
@@ -699,6 +776,7 @@ const handleClick = (event: MouseEvent): void => {
   if (target instanceof HTMLAnchorElement) event.preventDefault();
   const action = target.dataset.action;
   if (action === "begin") setView("experience");
+  if (action === "worksheet") setView("worksheet");
   if (action === "share") void shareSeen();
   if (action === "feedback") feedbackDialog.showModal();
   if (action === "resume") setView("experience");
@@ -865,9 +943,15 @@ window.addEventListener("afterprint", () => {
   const printButton = app.querySelector<HTMLButtonElement>(
     '[data-action="print"]',
   );
-  if (printButton) printButton.textContent = "Print or save another copy";
+  if (printButton)
+    printButton.textContent =
+      state.view === "worksheet"
+        ? "Print or save another blank copy"
+        : "Print or save another copy";
   announce(
-    "Print preview closed. Your brief and answers remain available in this tab until you clear them, refresh, or close the tab.",
+    state.view === "worksheet"
+      ? "Print preview closed. The blank worksheet remains available."
+      : "Print preview closed. Your brief and answers remain available in this tab until you clear them, refresh, or close the tab.",
   );
 });
 

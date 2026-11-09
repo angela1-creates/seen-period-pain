@@ -1,6 +1,7 @@
 export type AnswerStatus = "unanswered" | "answered" | "skipped" | "prefer-not";
 export type JourneyView =
   | "introduction"
+  | "worksheet"
   | "experience"
   | "impact"
   | "actions"

@@ -1,8 +1,8 @@
-# Seen
+# SEEN
 
-**Seen — A Period-Pain Conversation Companion** is a responsive educational prototype that helps adolescents organize what they have experienced, describe effects on daily life, and prepare questions for a healthcare appointment.
+**SEEN — A Period-Pain Conversation Companion** is a responsive educational prototype that helps people organize what they have experienced, describe effects on daily life, and prepare questions for a healthcare appointment.
 
-Seen supports communication. It does not diagnose endometriosis or any other condition, calculate medical risk, recommend treatment or medication, provide personalized triage, or replace a healthcare professional.
+SEEN supports communication. It does not diagnose endometriosis or any other condition, calculate medical risk, recommend treatment or medication, provide personalized triage, or replace a healthcare professional.
 
 ## Audience
 
@@ -15,7 +15,7 @@ The entry page is followed by four numbered reflection steps, then Review and Ap
 1. **Introduction** explains the product, privacy model, limits, and sources before any sensitive questions appear.
 2. **Experience** records the user’s own description and timing without interpreting it.
 3. **Impact** records effects on school, sleep, physical activity, social plans, concentration, and everyday tasks.
-4. **Previous Actions** records what the user already tried and what they noticed. Seen does not supply recommendations.
+4. **Previous Actions** records what the user already tried and what they noticed. SEEN does not supply recommendations.
 5. **Questions** groups a fixed nine-question library under Understanding, Next steps, and Support; shows a five-question selection limit; accepts one custom question; and offers an optional “Anything else worth mentioning?” note.
 6. **Review** shows exactly what was entered and preserves missing, skipped, and prefer-not-to-answer states.
 7. **Appointment Brief** formats the user’s answers for local browser printing or the browser’s Save as PDF option. Users are warned to print or save before refreshing or closing the tab.
@@ -24,13 +24,15 @@ One native confirmation dialog is reused for exit-with-data and Clear All. Indiv
 
 ## Medical And AI Boundaries
 
-Seen does not interpret answers or connect them to a disease. It does not provide treatment, medication, urgency, or risk guidance. V1 does not use generative AI: questions and health statements are fixed so they can be traced, reviewed, and tested. User text is never rewritten or expanded.
+SEEN does not interpret answers or connect them to a disease. It does not provide treatment, medication, urgency, or risk guidance. V1 does not use generative AI: questions and health statements are fixed so they can be traced, reviewed, and tested. User text is never rewritten or expanded.
 
 The current health copy is source-grounded but **has not been clinically reviewed**. It must not be described as clinically reviewed until Angela records the reviewer’s name or professional role, the review scope, and the review date.
 
 ## Privacy Model
 
-Answers exist only in the in-memory `SeenState` object for the active page. The brief remains available after the print dialog closes and can be cleared explicitly. Refreshing or closing the tab clears it naturally. Seen uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file. “Share Seen” sends only fixed introductory copy and the app’s root URL through the browser’s share sheet, or copies that same public message and link; reflection answers are never included.
+Answers exist only in the in-memory `SeenState` object for the active page. The brief remains available after the print dialog closes and can be cleared explicitly. Refreshing or closing the tab clears it naturally. SEEN uses no browser storage, cookies, answer-bearing URLs, analytics, authentication, backend, database, external API, service worker, or answer logging. Printing uses the browser’s print dialog and does not automatically download or share a file. “Share SEEN” sends only fixed introductory copy and the app’s root URL through the browser’s share sheet, or copies that same public message and link; reflection answers are never included. The blank worksheet exposes the same prompts without accepting or storing user input.
+
+The app distinguishes answer content from routine hosting metadata. Vercel and GitHub Pages may process ordinary request information, such as an IP address and browser or device details, when serving the site; SEEN does not include answers in those requests.
 
 ## Source Review
 
