@@ -81,7 +81,6 @@ test("the initial shell stays hidden until the complete introduction renders", a
 test("privacy reassurance is concise before the journey and details stay near sources", async () => {
   const source = await readFile("src/main.ts", "utf8");
   assert.match(source, /class="answer-privacy"/);
-  assert.match(source, /Angela cannot see your answers/);
   assert.match(source, /does not send your answers to a server/);
   assert.match(source, /class="privacy-details"/);
   assert.doesNotMatch(source, /class="privacy-section"/);

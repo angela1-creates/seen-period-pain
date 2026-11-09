@@ -278,7 +278,6 @@ const renderIntroduction = (): string => {
         <div class="answer-privacy" aria-labelledby="answer-privacy-title">
           <h2 id="answer-privacy-title">What happens to your answers</h2>
           <ul>
-            <li>Angela cannot see your answers.</li>
             <li>SEEN does not send your answers to a server, analytics service, or cloud storage.</li>
             <li>Your answers remain temporarily in this open browser tab.</li>
             <li>Refreshing or closing the tab clears your SEEN session.</li>
